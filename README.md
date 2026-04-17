@@ -48,3 +48,31 @@ else {
     }
 }
 ```
+
+## 3. Tortoise and Hare Race Simulation
+
+### Description
+Simulates a race between a tortoise and a hare on a 70-position track and prints the race progress step by step.
+
+- Uses an array to represent the race track visually  
+- Both players move based on random probability rules  
+- Displays real-time position updates after every move  
+- Handles collisions when both land on the same position  
+
+### Key Logic and Techniques
+```c
+number = 1 + (rand() % 10);
+
+// Tortoise movement
+if (number <= 5) t += 3;
+else if (number <= 7) t -= 6;
+else t += 1;
+
+// Hare movement
+if (number <= 2) ;
+else if (number <= 4) h += 9;
+else if (number == 5) h -= 12;
+else if (number <= 8) h += 1;
+else h -= 2;
+```
+
