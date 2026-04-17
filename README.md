@@ -212,3 +212,50 @@ void sorting(char name[][SIZE], int marks[][SUBJECT])
     }
 }
 ```
+
+## 6. Tower of Hanoi (Iterative Solution)
+
+### Description
+Solves the Tower of Hanoi problem using an iterative approach instead of recursion by simulating stacks with arrays.
+
+- Uses three pegs implemented as arrays  
+- Calculates total moves using bit manipulation  
+- Moves disks using fixed odd and even move rules  
+- Ensures all moves follow valid Tower of Hanoi constraints  
+
+### Key Logic and Techniques
+
+```c
+#include <stdio.h>
+#include <limits.h>
+
+#define MAX_DISKS 64
+
+void push(int peg[], int *top, int val)
+{
+    peg[++(*top)] = val;
+}
+
+int pop(int peg[], int *top)
+{
+    if (*top < 0) return INT_MAX;
+    return peg[(*top)--];
+}
+
+int peek(int peg[], int top)
+{
+    if (top < 0) return INT_MAX;
+    return peg[top];
+}
+
+long total_moves = (1LL << n) - 1;
+
+if (i % 2 == 1)
+{
+    // Move smallest disk in fixed cycle
+}
+else
+{
+    // Move the only legal disk between the other two pegs
+}
+```
