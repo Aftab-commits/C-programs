@@ -120,3 +120,95 @@ char* reverse_recursive(char *str)
     printf("%c", str[0]);
 }
 ```
+
+## 5. Student Marks Management System
+
+### Description
+Manages student records, calculates averages, finds the topper, and sorts students based on performance.
+
+- Stores student names and marks using 2D arrays  
+- Takes input using pointer-based 2D array parameters  
+- Calculates average marks for each student  
+- Finds student with highest average  
+- Sorts students in descending order of average marks  
+
+### Key Logic and Techniques
+
+```c
+#define SIZE 1000
+#define SUBJECT 3
+
+int num;
+
+// Input function using pointer to 2D arrays
+void input(char (*name)[SIZE], int (*marks)[SUBJECT])
+{
+    int student = 0;
+    while(student < num){
+        printf("Enter name: ");
+        scanf("%s", name[student]);
+
+        printf("Enter marks of 3 subjects:\n");
+        for(int subject = 0; subject < SUBJECT; subject++){
+            scanf("%d", &marks[student][subject]);
+        }
+
+        student++;
+    }
+}
+
+// Average calculation
+int AVG(int (*marks)[SUBJECT], int student)
+{
+    int total = 0;
+    for(int i = 0; i < SUBJECT; i++){
+        total += marks[student][i];
+    }
+    return total / SUBJECT;
+}
+
+// Find topper using pointer return
+char* highest(char (*names)[SIZE], int (*marks)[SUBJECT])
+{
+    int highest_avg = -999;
+    char *top;
+
+    for(int i = 0; i < num; i++){
+        if(AVG(marks, i) > highest_avg){
+            highest_avg = AVG(marks, i);
+            top = names[i];
+        }
+    }
+    return top;
+}
+
+// String copy using pointers
+void string_copy(char *string1, char *string2)
+{
+    for(int i = 0; ((*(string1+i)=*(string2+i))!='\0'); i++);
+}
+
+// Sorting students by average marks
+void sorting(char name[][SIZE], int marks[][SUBJECT])
+{
+    int tempMarks[SUBJECT];
+    char tempName[SIZE];
+
+    for(int i = 0; i < num - 1; i++){
+        for(int j = i + 1; j < num; j++){
+            if(AVG(marks, i) < AVG(marks, j)){
+
+                for(int k = 0; k < SUBJECT; k++){
+                    tempMarks[k] = marks[i][k];
+                    marks[i][k] = marks[j][k];
+                    marks[j][k] = tempMarks[k];
+                }
+
+                string_copy(tempName, name[i]);
+                string_copy(name[i], name[j]);
+                string_copy(name[j], tempName);
+            }
+        }
+    }
+}
+```
