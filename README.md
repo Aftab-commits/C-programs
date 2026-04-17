@@ -76,3 +76,47 @@ else if (number <= 8) h += 1;
 else h -= 2;
 ```
 
+## 4. Recursive String Reversal Program
+
+### Description
+Reverses strings using recursion with two different approaches: in-place swapping and recursive printing.
+
+- Uses recursion to reverse a string character by character  
+- Implements both in-place reversal and output-based reversal  
+- Includes manual string length calculation without library functions  
+- Demonstrates multiple recursive techniques on strings  
+
+### Key Logic and Techniques
+
+```c
+// String length calculation without library function
+int string_length(char *str)
+{
+    int len = 0;
+    while(str[len] != '\0'){
+        len++;
+    }
+    return len;
+}
+
+// In-place recursive reversal using swapping
+void reverse_string(char *str, int start, int end)
+{
+    if(start >= end) return;
+
+    char temp = str[start];
+    str[start] = str[end];
+    str[end] = temp;
+
+    reverse_string(str, start + 1, end - 1);
+}
+
+// Recursive reverse using pointer arithmetic (prints in reverse order)
+char* reverse_recursive(char *str)
+{
+    if(str[0] == '\0') return str;
+
+    reverse_recursive(&str[1]);
+    printf("%c", str[0]);
+}
+```
