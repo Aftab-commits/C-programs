@@ -446,3 +446,72 @@ do{
 
 } while(number <= 64);
 ```
+
+## 10. N-Queens Placement (Heuristic Approach)
+
+### Description
+Places queens on an 8x8 chessboard using a greedy heuristic based on minimum attack coverage.
+
+- Selects positions where a queen would attack the least number of squares  
+- Places a queen and marks all attacked positions on the board  
+- Repeats the process until no safe position is left  
+- Does not use backtracking, so solution may not be optimal  
+
+### Key Logic and Techniques
+
+```c
+#include <stdio.h>
+#define size 8
+
+// Place queen and mark all attacked positions
+void attack(int board[][size], int row, int col) {
+    board[row][col] = 10; // queen placed
+
+    // Mark row and column
+    for (int j = 0; j < size; j++)
+        if (board[row][j] != 10) board[row][j] = 1;
+
+    for (int i = 0; i < size; i++)
+        if (board[i][col] != 10) board[i][col] = 1;
+
+    // Mark diagonals (4 directions)
+    for (int i=row-1,j=col-1; i>=0&&j>=0; i--,j--) if (board[i][j]!=10) board[i][j]=1;
+    for (int i=row+1,j=col+1; i<size&&j<size; i++,j++) if (board[i][j]!=10) board[i][j]=1;
+    for (int i=row-1,j=col+1; i>=0&&j<size; i--,j++) if (board[i][j]!=10) board[i][j]=1;
+    for (int i=row+1,j=col-1; i<size&&j>=0; i++,j--) if (board[i][j]!=10) board[i][j]=1;
+}
+
+// Calculate how many squares a queen would attack from a position
+int elimination(int row, int col) {
+    int count = 0;
+
+    count += size;       // row coverage
+    count += size - 1;   // column coverage
+
+    // diagonal coverage
+    for (int i=row-1,j=col-1; i>=0&&j>=0; i--,j--) count++;
+    for (int i=row+1,j=col+1; i<size&&j<size; i++,j++) count++;
+    for (int i=row-1,j=col+1; i>=0&&j<size; i--,j++) count++;
+    for (int i=row+1,j=col-1; i<size&&j>=0; i++,j--) count++;
+
+    return count; // lower value = better position
+}
+
+// Greedy selection: choose empty cell with minimum elimination
+for (int i = 0; i < size; i++) {
+    for (int j = 0; j < size; j++) {
+
+        if (chess[i][j] == 0) { // only empty cells
+            if (access[i][j] < minAccess) {
+                minAccess = access[i][j];
+                bestR = i;
+                bestC = j;
+            }
+        }
+
+    }
+}
+
+// Place queen and update board
+attack(chess, bestR, bestC);
+```
