@@ -260,3 +260,44 @@ else
 }
 ```
 
+## 7. Tower of Hanoi (Recursive Solution)
+
+### Description
+Implements the Tower of Hanoi problem using recursion based on divide-and-conquer strategy.
+
+- Takes number of disks as input and solves using recursive calls  
+- Moves disks from source to destination using an auxiliary peg  
+- Breaks the problem into smaller subproblems (n-1 disks)  
+- Prints each move and counts total number of moves  
+- Follows the rule that a larger disk can never be placed on a smaller one  
+
+### Key Logic and Techniques
+
+```c
+// Recursive function
+int hanoi(int n, char source, char auxiliary, char destination)
+{
+    if(n == 1)
+    {
+        // Base case: directly move single disk
+        printf("Move disk 1 from %c to %c\n", source, destination);
+        return 1;
+    }
+    else
+    {
+        int moves = 0;
+
+        // Step 1: move n-1 disks from source to auxiliary
+        moves += hanoi(n-1, source, destination, auxiliary);
+
+        // Step 2: move largest disk to destination
+        printf("Move disk %d from %c to %c\n", n, source, destination);
+        moves++;
+
+        // Step 3: move n-1 disks from auxiliary to destination
+        moves += hanoi(n-1, auxiliary, source, destination);
+
+        return moves;
+    }
+}
+```
