@@ -344,3 +344,105 @@ if(reading.tool[0] != '\0'){
     // valid record
 }
 ```
+
+## 9. Knight’s Tour Problem (Heuristic Approach)
+
+### Description
+Implements the Knight’s Tour using a greedy heuristic (Warnsdorff’s Rule) to visit all 64 squares exactly once.
+
+- Starts from any position on the board  
+- Generates all valid knight moves  
+- Chooses the next move with the least future options (minimum accessibility)  
+- Updates accessibility dynamically after each move  
+- Stops when all squares are visited or no move is possible  
+
+### Key Logic and Techniques
+
+```c
+#include<stdio.h>
+#define size 8
+
+// Possible knight moves (L-shape)
+int vertical[8]   = {-1,-2,-2,-1,1,2,2,1};
+int horizontal[8] = { 2, 1,-1,-2,-2,-1,1,2};
+
+// Find all valid next moves
+int position(int r, int col, const int board[][size], int possible_r[], int possible_col[])
+{
+    int next_r, next_col, count = 0;
+
+    for(int i = 0, j = 0; i < 8; i++){
+        next_r = r + vertical[i];
+        next_col = col + horizontal[i];
+
+        // Check boundaries and ensure square is not visited
+        if(next_r >= 0 && next_r < size && next_col >= 0 && next_col < size && board[next_r][next_col] == 0){
+            possible_r[j] = next_r;     // store valid row
+            possible_col[j] = next_col; // store valid column
+            j++;
+            count++;
+        }
+    }
+    return count;  // total valid moves
+}
+
+// Select next move using minimum accessibility (Warnsdorff’s Rule)
+int smallest_box(const int access[][size], const int possible_r[], const int possible_c[], int n, int *best_r, int *best_c)
+{
+    int smallest = 999;
+
+    for(int i = 0; i < n; i++){
+        int r = possible_r[i];
+        int c = possible_c[i];
+
+        // Choose square with least accessibility (fewest future moves)
+        if(access[r][c] < smallest){
+            smallest = access[r][c];
+            *best_r = r;
+            *best_c = c;
+        }
+    }
+    return smallest;
+}
+
+// Update accessibility after each move
+int accessibilty(int access[][size], const int board[][size], int r, int c)
+{
+    for(int i = 0; i < 8; i++){
+        int next_r = r + vertical[i];
+        int next_c = c + horizontal[i];
+
+        // Reduce accessibility of reachable unvisited squares
+        if(next_r >= 0 && next_r < size && next_c >= 0 && next_c < size && board[next_r][next_c] == 0){
+            if(access[next_r][next_c] > 0){
+                access[next_r][next_c]--;
+            }
+        }
+    }
+}
+
+// Main tour loop using greedy heuristic
+do{
+    int n = position(current_r, current_c, chess, possible_row, possible_col);
+
+    // If no moves left before completing all 64 squares → failure
+    if(n == 0 && number < 64){
+        break;
+    }
+
+    // Select best next move based on minimum accessibility
+    smallest_box(access, possible_row, possible_col, n, &next_r, &next_c);
+
+    // Move knight and mark step number
+    chess[next_r][next_c] = ++number;
+
+    // Mark square as visited and update accessibility matrix
+    access[next_r][next_c] = 99999;
+    accessibilty(access, chess, next_r, next_c);
+
+    // Update current position
+    current_r = next_r;
+    current_c = next_c;
+
+} while(number <= 64);
+```
