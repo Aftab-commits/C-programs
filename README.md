@@ -301,3 +301,46 @@ int hanoi(int n, char source, char auxiliary, char destination)
     }
 }
 ```
+
+## 8. Inventory Management System (File Handling - Random Access)
+
+### Description
+Implements an inventory system using binary file handling with random access to manage records.
+
+- Stores tool name, quantity, and cost using a structure  
+- Creates a file with fixed-size records for direct access  
+- Allows inserting records at specific positions  
+- Supports updating and deleting records using record number  
+- Reads and displays only valid (non-empty) records  
+
+### Key Logic and Techniques
+
+```c
+#include <stdio.h>
+
+typedef struct{
+    char tool[100];
+    int quant;
+    double cost;
+} inventory;
+
+// Initialize file with empty records for fixed-size random access
+inventory empty = {"", 0, 0};
+for(int i = 0; i < 100; i++){
+    fwrite(&empty, sizeof(inventory), 1, fptr);
+}
+
+// Random access: jump directly to required record position
+fseek(ptr, (record_num - 1) * sizeof(inventory), SEEK_SET);
+fwrite(&record, sizeof(inventory), 1, ptr);
+
+// Deletion: overwrite record with empty structure
+fseek(ptr, (record_num - 1) * sizeof(inventory), SEEK_SET);
+fwrite(&empty, sizeof(inventory), 1, ptr);
+
+// Reading records and skipping empty entries
+fread(&reading, sizeof(inventory), 1, rptr);
+if(reading.tool[0] != '\0'){
+    // valid record
+}
+```
