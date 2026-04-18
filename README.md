@@ -216,46 +216,47 @@ void sorting(char name[][SIZE], int marks[][SUBJECT])
 ## 6. Tower of Hanoi (Iterative Solution)
 
 ### Description
-Solves the Tower of Hanoi problem using an iterative approach instead of recursion by simulating stacks with arrays.
+Implements the Tower of Hanoi problem using an iterative approach instead of recursion.
 
-- Uses three pegs implemented as arrays  
-- Calculates total moves using bit manipulation  
-- Moves disks using fixed odd and even move rules  
-- Ensures all moves follow valid Tower of Hanoi constraints  
+- Uses three arrays to simulate pegs as stacks  
+- Initially places all disks on the source peg in descending order  
+- Calculates total required moves using 2^n - 1  
+- Executes moves in a loop using deterministic rules:
+  - Odd moves always move the smallest disk in a fixed cyclic order  
+  - Even moves perform the only valid legal move between the other two pegs  
+- Continues until all disks are transferred to the destination peg  
 
 ### Key Logic and Techniques
 
 ```c
-#include <stdio.h>
-#include <limits.h>
+#define MAX_DISKS 64   // supports up to 64 disks using bit operations
 
-#define MAX_DISKS 64
-
+// Stack simulation using arrays
 void push(int peg[], int *top, int val)
 {
-    peg[++(*top)] = val;
+    peg[++(*top)] = val;   // insert element at top
 }
 
 int pop(int peg[], int *top)
 {
-    if (*top < 0) return INT_MAX;
+    if (*top < 0) return INT_MAX;   // treat empty peg as infinity
     return peg[(*top)--];
 }
 
-int peek(int peg[], int top)
-{
-    if (top < 0) return INT_MAX;
-    return peg[top];
-}
+// Efficient move calculation using bit manipulation
+long total_moves = (1LL << n) - 1;   // computes 2^n - 1
 
-long total_moves = (1LL << n) - 1;
-
+// Core movement logic
 if (i % 2 == 1)
 {
-    // Move smallest disk in fixed cycle
+    // Odd move:
+    // always move the smallest disk in a fixed cyclic pattern
 }
 else
 {
-    // Move the only legal disk between the other two pegs
+    // Even move:
+    // choose the only legal move between the other two pegs
+    // by comparing top elements and moving the smaller disk
 }
 ```
+
